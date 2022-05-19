@@ -21,8 +21,8 @@ public class SportAPI {
         return new ResponseEntity(sportService.sviSportovi(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "pretraga/{naziv}")
-    public ResponseEntity<Sport> pretragaSporta(@PathVariable(name = "naziv") String naziv){
+    @GetMapping(value = "pretraga/{naziv}")
+    public ResponseEntity<List<Sport>> pretragaSporta(@PathVariable(name = "naziv") String naziv){
         return new ResponseEntity(sportService.pretraziSport(naziv),HttpStatus.OK);
     }
 

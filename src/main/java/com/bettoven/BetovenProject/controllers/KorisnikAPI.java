@@ -12,7 +12,7 @@ import com.bettoven.BetovenProject.services.korisnik.KorisnikService;
 @RequestMapping("korisnik")
 public class KorisnikAPI {
     @Autowired
-    KorisnikService korisnikService;
+    private KorisnikService korisnikService;
 
     @PostMapping(value = "registruj",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Korisnik> registrujKorisnika(@RequestBody Korisnik novKorisnik){
