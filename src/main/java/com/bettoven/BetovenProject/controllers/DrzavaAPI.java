@@ -2,6 +2,7 @@ package com.bettoven.BetovenProject.controllers;
 
 import com.bettoven.BetovenProject.services.drzava.Drzava;
 import com.bettoven.BetovenProject.services.drzava.DrzavaService;
+import com.bettoven.BetovenProject.services.liga.Liga;
 import com.bettoven.BetovenProject.services.sport.SportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,11 @@ public class DrzavaAPI {
     @GetMapping(value = "pretraga/{naziv}")
     public ResponseEntity<List<Drzava>> pretragaDrzava(@PathVariable(name = "naziv") String naziv){
         return new ResponseEntity(drzavaService.pretragaDrzava(naziv),HttpStatus.OK);
+    }
+
+    @GetMapping(value = "lige/{naziv}")
+    public ResponseEntity<List<Liga>> ligeDrzave(@PathVariable(name = "naziv") String naziv){
+        return new ResponseEntity(drzavaService.ligeDrzave(naziv),HttpStatus.OK);
     }
 
     @PostMapping(value = "ubaci",consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -1,9 +1,6 @@
 package com.bettoven.BetovenProject.services.kvota;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -15,19 +12,20 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @RequiredArgsConstructor
 @Table(name = "kvota")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "kvotaID")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "kvotaid",scope = Kvota.class)
 public class Kvota {
     @Id
     @Column(name = "kvotaid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer kvotaID;
+    private Integer kvotaid;
 
     @Column(name = "vrednost",nullable = false)
     private Double vrednostKvote;
 
-    @OneToMany(mappedBy = "kvota",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "kvotaid",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
     @ToString.Exclude
     private Set<KvotaUcesnik> ucesceKvote;
@@ -37,7 +35,7 @@ public class Kvota {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Kvota kvota = (Kvota) o;
-        return kvotaID != null && Objects.equals(kvotaID, kvota.kvotaID);
+        return kvotaid != null && Objects.equals(kvotaid, kvota.kvotaid);
     }
 
     @Override

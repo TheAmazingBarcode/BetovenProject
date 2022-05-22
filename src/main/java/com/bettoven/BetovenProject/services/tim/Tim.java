@@ -9,7 +9,6 @@ import com.bettoven.BetovenProject.services.uplata.Uplata;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.Hibernate;
-
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -21,35 +20,37 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@Table(name = "id")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "timID")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "tim")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "timid")
 public class Tim {
     //ID i ostale kolone
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "timid")
-    private Integer timID;
+    private Integer timid;
 
     @Column(name = "naziv",nullable = false)
     private String naziv;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drzavaID",nullable = false)
+    @JoinColumn(name = "drzavaid",nullable = false,referencedColumnName = "drzavaid")
     @ToString.Exclude
     private Drzava drzava;
 
     //n:m veza izmedju Lige i tima
     @ManyToMany(mappedBy = "ucesnici")
-    @JsonIgnore
     @ToString.Exclude
+    @JsonIgnore
     private Set<Liga> ucesceLiga;
 
     @ManyToMany(mappedBy = "ucesniciMeca")
+    @JsonIgnore
     @ToString.Exclude
     private Set<Mec> mecevi;
 
-    @JsonManagedReference(value = "timske-kvote")
+    @JsonIgnore
     @OneToMany(mappedBy = "kvotaTima",cascade = CascadeType.ALL,orphanRemoval = true)
     @ToString.Exclude
     private Set<KvotaUcesnik> kvote;
@@ -69,7 +70,7 @@ public class Tim {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Tim tim = (Tim) o;
-        return timID != null && Objects.equals(timID, tim.timID);
+        return timid != null && Objects.equals(timid, tim.timid);
     }
 
     @Override

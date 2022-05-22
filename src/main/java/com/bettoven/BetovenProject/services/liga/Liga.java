@@ -1,6 +1,7 @@
 package com.bettoven.BetovenProject.services.liga;
 
 import com.bettoven.BetovenProject.services.drzava.Drzava;
+import com.bettoven.BetovenProject.services.kvota.Kvota;
 import com.bettoven.BetovenProject.services.mec.Mec;
 import com.bettoven.BetovenProject.services.sport.Sport;
 import com.bettoven.BetovenProject.services.tim.Tim;
@@ -18,31 +19,32 @@ import java.util.Set;
 @ToString
 @RequiredArgsConstructor
 @Table(name = "liga")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "ligaID")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "ligaid",scope = Kvota.class)
 public class Liga {
     @Id
     @Column(name = "ligaid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ligaID;
+    private Integer ligaid;
 
     @Column(name = "naziv",nullable = false)
     private String naziv;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "drzavaID",nullable = false)
+    @JoinColumn(name = "drzavaid")
     @ToString.Exclude
-    private Drzava drzavaTima;
+    private Drzava drzavaLige;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sportID",nullable = false)
+    @JoinColumn(name = "sportid",referencedColumnName = "sportid")
     @ToString.Exclude
-    private Sport sport;
+    private Sport sportLige;
 
     // n:m veza izmedju Lige i tima
     @ManyToMany
     @JoinTable(name = "ucesce_tima",
-            joinColumns = {@JoinColumn(name = "ligaID")},
-            inverseJoinColumns = {@JoinColumn(name = "timID")})
+            joinColumns = {@JoinColumn(name = "ligaid")},
+            inverseJoinColumns = {@JoinColumn(name = "timid")})
     @ToString.Exclude
     private Set<Tim> ucesnici;
 
@@ -56,7 +58,7 @@ public class Liga {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Liga liga = (Liga) o;
-        return ligaID != null && Objects.equals(ligaID, liga.ligaID);
+        return ligaid != null && Objects.equals(ligaid, liga.ligaid);
     }
 
     @Override

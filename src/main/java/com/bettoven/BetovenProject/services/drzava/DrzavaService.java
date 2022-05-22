@@ -1,9 +1,10 @@
 package com.bettoven.BetovenProject.services.drzava;
 
 import com.bettoven.BetovenProject.repos.DrzavaRepository;
+import com.bettoven.BetovenProject.services.liga.Liga;
+import com.bettoven.BetovenProject.services.tim.Tim;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -23,5 +24,13 @@ public class DrzavaService {
 
     public Drzava ubaciDrzavu(Drzava drzava){
         return drzavaRepository.save(drzava);
+    }
+
+    public List<Liga> ligeDrzave(String naziv){
+        return drzavaRepository.findByNaziv(naziv).getLige().stream().toList();
+    }
+
+    public List<Tim> timoviDrzave(String naziv){
+        return drzavaRepository.findByNaziv(naziv).getTimovi().stream().toList();
     }
 }

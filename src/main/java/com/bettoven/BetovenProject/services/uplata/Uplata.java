@@ -3,10 +3,7 @@ package com.bettoven.BetovenProject.services.uplata;
 import com.bettoven.BetovenProject.services.korisnik.Korisnik;
 import com.bettoven.BetovenProject.services.mec.Mec;
 import com.bettoven.BetovenProject.services.tim.Tim;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 import javax.persistence.*;
@@ -17,29 +14,31 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "uplataID")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "uplataid",scope = Uplata.class)
 @Table(name = "uplata")
 public class Uplata {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "uplataid")
-    private Integer uplataID;
+    private Integer uplataid;
 
     @Column(name = "iznos")
     private Double iznosUplate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "korisnikID")
+    @JoinColumn(name = "korisnikid")
     @ToString.Exclude
     private Korisnik izvorUplate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mecID",nullable = false)
+    @JoinColumn(name = "mecid",nullable = false)
     @ToString.Exclude
+    @JsonIdentityReference(alwaysAsId = true)
     private Mec uplaceniMec;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "timID",nullable = false)
+    @JoinColumn(name = "timid",nullable = false)
     @ToString.Exclude
     private Tim predvidjeniTim;
 
@@ -48,7 +47,7 @@ public class Uplata {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Uplata uplata = (Uplata) o;
-        return uplataID != null && Objects.equals(uplataID, uplata.uplataID);
+        return uplataid != null && Objects.equals(uplataid, uplata.uplataid);
     }
 
     @Override

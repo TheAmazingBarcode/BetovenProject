@@ -1,10 +1,7 @@
 package com.bettoven.BetovenProject.services.korisnik;
 
 import com.bettoven.BetovenProject.services.uplata.Uplata;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -18,15 +15,16 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "korisnik")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "korisnikID")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "korisnikid")
 public class Korisnik {
     //ID korisnika i ostale kolone
     @Id
     @Column(name = "korisnikid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer korisnikID;
+    private Integer korisnikid;
 
     @Column(name = "username",nullable = false)
     private String username;
@@ -38,7 +36,7 @@ public class Korisnik {
     private String email;
 
     @Column(name = "balans")
-    private Double balans;
+    private Double balans = 0.00;
 
     @OneToMany(mappedBy = "izvorUplate",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
@@ -50,7 +48,7 @@ public class Korisnik {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Korisnik korisnik = (Korisnik) o;
-        return korisnikID != null && Objects.equals(korisnikID, korisnik.korisnikID);
+        return korisnikid != null && Objects.equals(korisnikid, korisnik.korisnikid);
     }
 
     @Override

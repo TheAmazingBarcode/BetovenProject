@@ -10,9 +10,9 @@ import java.io.Serializable;
 @Data
 @RequiredArgsConstructor
 public class KvotaUcesnikID implements Serializable {
-    @Column(name = "mec_id")
-    private Integer mecKvotaID;
+    @Column(name = "mecid")
+    private Integer mecid;
 
-    @Column(name = "kvota_id")
-    private Integer kvotaUcesnikID;
+    @Column(name = "kvotaid")
+    private Integer kvotaid;
 }

@@ -2,13 +2,9 @@ package com.bettoven.BetovenProject.services.rezultat;
 
 import com.bettoven.BetovenProject.services.mec.Mec;
 import com.bettoven.BetovenProject.services.tim.Tim;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.Hibernate;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -17,20 +13,21 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "rezultatID")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "rezultatid",scope = Rezultat.class)
 @Table(name = "rezultat")
 public class Rezultat {
     @Id
     @Column(name = "rezultatid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer rezultatID;
+    private Integer rezultatid;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name ="mec_id",referencedColumnName = "mecID")
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name ="mecid",referencedColumnName = "mecid")
     private Mec odigraniMec;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "timID",nullable = false)
+    @JoinColumn(name = "timid",nullable = false)
     @ToString.Exclude
     private Tim pobednickiTim;
 
@@ -39,7 +36,7 @@ public class Rezultat {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Rezultat rezultat = (Rezultat) o;
-        return rezultatID != null && Objects.equals(rezultatID, rezultat.rezultatID);
+        return rezultatid != null && Objects.equals(rezultatid, rezultat.rezultatid);
     }
 
     @Override
